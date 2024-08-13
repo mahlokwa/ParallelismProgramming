@@ -1,5 +1,5 @@
 //Copyright M.M.Kuttel 2024 CSC2002S, UCT
-//package Parallel;
+// in this grid class the only modified part is the update method 
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -10,6 +10,7 @@ import java.util.concurrent.ForkJoinPool;
 
 //This class is for the grid for the Abelian Sandpile cellular automaton
 public class Grid {
+  
    protected int rows, columns;
    protected int [][] grid; //grid 
    protected int [][] updateGrid;//grid for next time step
@@ -81,11 +82,10 @@ public class Grid {
 	
 	//key method to calculate the next update grod
    boolean update() {
-      //ForkJoinPool pool = new ForkJoinPool();
-        ParallelGrid task = new ParallelGrid(this, 1, this.getRows() + 1); 
-         boolean change = ForkJoinPool.commonPool().invoke(task);
-      if (change) { nextTimeStep();}
-      return change;
+        ParallelGrid task = new ParallelGrid(this, 1, this.getRows() + 1); // instatiate the ParallelGrid class
+         boolean change = ForkJoinPool.commonPool().invoke(task); // calls invoke to begin the parallel execution using commonPool
+      if (change) { nextTimeStep();} // checks if the update grid is the same as the grid, if there is, moves to the next time step
+      return change; // return whether any changes occured in the grid 
    }
 	
 	
